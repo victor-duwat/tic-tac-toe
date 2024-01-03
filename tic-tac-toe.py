@@ -87,6 +87,7 @@ class JeuMorpion:
 
 
 class PlateauMorpion(tk.Tk):
+
     def __init__(self, jeu):
         super().__init__()
         self.title("Jeu du Morpion")
@@ -133,25 +134,23 @@ class PlateauMorpion(tk.Tk):
                 bouton.bind("<ButtonPress-1>", self.jouer)
                 bouton.grid(row=ligne, column=colonne, padx=5, pady=5, sticky="nsew")
 
-    class PlateauMorpion(tk.Tk):
-
-        def jouer(self, evenement):
-            bouton_clique = evenement.widget
-            ligne, colonne = self._cellules[bouton_clique]
-            mouvement = Mouvement(ligne, colonne, self._jeu.joueur_actuel.etiquette)
-            if self._jeu.est_coup_valide(mouvement):
-                self._mettre_a_jour_bouton(bouton_clique)
-                self._jeu.traiter_coup(mouvement)
-                if self._jeu.a_un_gagnant():
-                    self._mettre_en_surbrillance_cellules()
-                    msg = f'Joueur "{self._jeu.joueur_actuel.etiquette}" a gagné !'
-                    couleur = self._jeu.joueur_actuel.couleur
-                    self._mettre_a_jour_affichage(msg, couleur)
-                    self.demander_rejouer()
-                else:
-                    self._jeu.basculer_joueur()
-                    msg = f"C'est au tour de {self._jeu.joueur_actuel.etiquette}"
-                    self._mettre_a_jour_affichage(msg)
+    def jouer(self, evenement):
+        bouton_clique = evenement.widget
+        ligne, colonne = self._cellules[bouton_clique]
+        mouvement = Mouvement(ligne, colonne, self._jeu.joueur_actuel.etiquette)
+        if self._jeu.est_coup_valide(mouvement):
+            self._mettre_a_jour_bouton(bouton_clique)
+            self._jeu.traiter_coup(mouvement)
+            if self._jeu.a_un_gagnant():
+                self._mettre_en_surbrillance_cellules()
+                msg = f'Joueur "{self._jeu.joueur_actuel.etiquette}" a gagné !'
+                couleur = self._jeu.joueur_actuel.couleur
+                self._mettre_a_jour_affichage(msg, couleur)
+                self.demander_rejouer()
+            else:
+                self._jeu.basculer_joueur()
+                msg = f"C'est au tour de {self._jeu.joueur_actuel.etiquette}"
+                self._mettre_a_jour_affichage(msg)
 
     def _mettre_a_jour_bouton(self, bouton_clique):
         bouton_clique.config(text=self._jeu.joueur_actuel.etiquette)
@@ -180,6 +179,7 @@ class PlateauMorpion(tk.Tk):
             self.reinitialiser_plateau()
         else:
             self.quit()
+
 
 def main():
     jeu = JeuMorpion()
